@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Scanner</title>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #2c3e50, #27ae60);
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        #qr-reader {
+            width: 90%;
+            max-width: 400px;
+            border: 3px solid white;
+            border-radius: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 1.5s ease-in-out;
+        }
+        .back-btn {
+            display: inline-block;
+            background: #f39c12;
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            margin-top: 20px;
+            font-size: 1.2em;
+            transition: transform 0.3s, background 0.3s;
+        }
+        .back-btn:hover {
+            transform: scale(1.1);
+            background: #e67e22;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Scan QR Code</h1>
+    <div id="qr-reader"></div>
+    <a href="index.html" class="back-btn">Back to Home</a>
+
+    <script>
+        function playBeep() {
+            let beep = new Audio('https://www.soundjay.com/button/beep-07.wav');
+            beep.play();
+        }
+        
+        function onScanSuccess(decodedText, decodedResult) {
+            console.log("QR Code Scanned: ", decodedText);
+            playBeep();
+            
+            if (isValidQR(decodedText)) {
+                alert("QR Code Valid: " + decodedText);
+                window.location.href = 'quiz.html?code=' + encodeURIComponent(decodedText);
+            } else {
+                alert("Invalid QR Code. Please scan a valid one.");
+            }
+        }
+        
+        function isValidQR(code) {
+            // Example validation (modify based on real codes)
+            const validCodes = ["TREASURE123", "ENERGY456", "HUNT789"];
+            return validCodes.includes(code);
+        }
+        
+        let qrScanner = new Html5Qrcode("qr-reader");
+        qrScanner.start(
+            { facingMode: "environment" }, 
+            { fps: 10, qrbox: 250 }, 
+            onScanSuccess
+        );
+    </script>
+</body>
+</html>

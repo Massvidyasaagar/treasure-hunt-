@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treasure Hunt Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #2c3e50, #27ae60);
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .quiz-container, .completion-screen, .registration-container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            animation: fadeIn 1s ease-in-out;
+        }
+        .question {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        .options button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            animation: slideIn 0.5s ease-in-out;
+        }
+        .options button:hover {
+            background: #f39c12;
+            color: white;
+        }
+        .timer, .progress {
+            font-size: 1.2em;
+            margin-top: 15px;
+        }
+        .leaderboard {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 20px;
+            width: 300px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+        .completion-screen {
+            display: none;
+            text-align: center;
+        }
+        .completion-screen h1 {
+            font-size: 2em;
+        }
+        .confetti {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 999;
+        }
+        .hint-btn {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f39c12;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="registration-container" id="registration-container">
+        <h2>Enter Team Details</h2>
+        <input type="text" id="team-name" placeholder="Team Name">
+        <input type="text" id="participant-name" placeholder="Participant Names">
+        <button onclick="startGame()">Start</button>
+    </div>
+    
+    <div class="quiz-container" id="quiz-container" style="display:none;">
+        <div class="progress">Clue <span id="clue-progress">1</span> of 5</div>
+        <div class="question" id="question">Loading question...</div>
+        <div class="options" id="options"></div>
+        <div class="timer" id="timer">Time Left: <span id="time">30</span> sec</div>
+        <button class="hint-btn" onclick="showHint()">Show Hint</button>
+    </div>
+    
+    <div class="leaderboard">
+        <h2>Leaderboard</h2>
+        <p>Team: <span id="leaderboard-team">N/A</span></p>
+        <p>Participants: <span id="leaderboard-names">N/A</span></p>
+        <p>Points: <span id="leaderboard-points">0</span></p>
+    </div>
+
+    <div class="completion-screen" id="completion-screen">
+        <h1>Congratulations! 🎉</h1>
+        <p>You have completed the Treasure Hunt!</p>
+        <button onclick="restartGame()">Restart</button>
+        <button onclick="shareGame()">Share</button>
+    </div>
+    
+    <canvas class="confetti" id="confetti"></canvas>
+
+    <script>
+        let leaderboard = { points: 0, team: "", participants: "" };
+
+        function startGame() {
+            leaderboard.team = document.getElementById("team-name").value;
+            leaderboard.participants = document.getElementById("participant-name").value;
+            document.getElementById("leaderboard-team").innerText = leaderboard.team;
+            document.getElementById("leaderboard-names").innerText = leaderboard.participants;
+            document.getElementById("registration-container").style.display = "none";
+            document.getElementById("quiz-container").style.display = "block";
+            startQuiz();
+        }
+        
+        function startQuiz() {
+            document.getElementById("clue-progress").innerText = "1";
+            document.getElementById("question").innerText = "What is the most abundant renewable energy source?";
+        }
+
+        function showHint() {
+            alert("Hint: It comes from the sun!");
+        }
+    </script>
+</body>
+</html>
